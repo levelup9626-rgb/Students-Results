@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>نتيجة الطالب</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      padding: 20px;
+      text-align: center;
+    }
+    h2 {
+      color: #333;
+    }
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 70%;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    th {
+      background: #007bff;
+      color: #fff;
+    }
+    tr:nth-child(even) {
+      background: #f2f2f2;
+    }
+    .back-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .back-btn:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h2>📄 نتيجة الطالب</h2>
+  <div id="studentInfo"></div>
+  <div id="results"></div>
+  <a href="index.html" class="back-btn">🔙 العودة للبحث</a>
+
+  <script>
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    const studentName = getQueryParam('name');
+    const studentClass = getQueryParam('class');
+    const studentMonth = getQueryParam('month');
+
+    document.getElementById('studentInfo').innerHTML = `
+      <p><strong>الاسم:</strong> ${studentName}</p>
+      <p><strong>الصف:</strong> ${studentClass}</p>
+      <p><strong>الشهر:</strong> ${studentMonth}</p>
+    `;
+
+    fetch('students_results.csv')
+      .then(response => response.text())
+      .then(data => {
+        const rows = data.split('\n').map(row => row.split(','));
+        const headers = rows[0];
+        const studentRow = rows.find(r => 
+          r[0].trim() === studentName &&
+          r[1].trim() === studentClass &&
+          r[2].trim() === studentMonth
+        );
+
+        if (studentRow) {
+          let table = "<table><tr>";
+          for (let i = 3; i < headers.length; i++) {
+            table += `<th>${headers[i]}</th>`;
+          }
+          table += "</tr><tr>";
+          for (let i = 3; i < studentRow.length; i++) {
+            table += `<td>${studentRow[i]}</td>`;
+          }
+          table += "</tr></table>";
+          document.getElementById('results').innerHTML = table;
+        } else {
+          document.getElementById('results').innerHTML = "<p style='color:red'>🚫 لا توجد نتيجة لهذا الطالب</p>";
+        }
+      })
+      .catch(err => {
+        document.getElementById('results').innerHTML = "<p style='color:red'>⚠️ خطأ في تحميل النتائج</p>";
+      });
+  </script>
+</body>
+</html>
