@@ -2,75 +2,63 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>البحث عن نتيجة الطالب</title>
+  <title>نتيجة الامتحانات</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f9;
-      padding: 20px;
-      text-align: center;
-    }
-    h2 {
-      color: #333;
-    }
-    input, select {
-      padding: 10px;
-      margin: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      width: 200px;
-    }
-    button {
-      padding: 10px 20px;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #0056b3;
-    }
+    body { font-family: Tahoma, sans-serif; text-align: center; margin: 20px; }
+    .container { max-width: 400px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+    label, select, input { display: block; margin: 10px auto; width: 90%; padding: 8px; }
+    button { padding: 10px 20px; margin-top: 15px; cursor: pointer; }
   </style>
 </head>
 <body>
-  <h2>🔍 البحث عن نتيجة الطالب</h2>
+  <div class="container">
+    <h2>البحث عن النتيجة</h2>
+    <form id="searchForm">
+      <label>اسم الطالب:</label>
+      <input type="text" id="studentName" required>
 
-  <form id="searchForm">
-    <input type="text" id="name" placeholder="أدخل اسم الطالب" required>
-    
-    <select id="class" required>
-      <option value="">اختر الصف</option>
-      <option value="اولى-اعدادي">أولى إعدادي</option>
-      <option value="تانية-اعدادي">تانية إعدادي</option>
-      <option value="تالتة-اعدادي">تالتة إعدادي</option>
-      <option value="اولى-ثانوي">أولى ثانوي</option>
-      <option value="تانية-ثانوي">تانية ثانوي</option>
-      <option value="تالتة-ثانوي">تالتة ثانوي</option>
-    </select>
+      <label>المرحلة:</label>
+      <select id="stage" required>
+        <option value="اعدادي">المرحلة الإعدادية</option>
+        <option value="ثانوي">المرحلة الثانوية</option>
+      </select>
 
-    <select id="month" required>
-      <option value="">اختر الشهر</option>
-      <option value="يناير">يناير</option>
-      <option value="فبراير">فبراير</option>
-      <option value="مارس">مارس</option>
-      <option value="ابريل">إبريل</option>
-      <option value="مايو">مايو</option>
-      <option value="يونيو">يونيو</option>
-    </select>
+      <label>الصف الدراسي:</label>
+      <select id="class" required>
+        <option value="اولى">الصف الأول</option>
+        <option value="تانية">الصف الثاني</option>
+        <option value="تالتة">الصف الثالث</option>
+      </select>
 
-    <button type="submit">عرض النتيجة</button>
-  </form>
+      <label>الشهر:</label>
+      <select id="month" required>
+        <option value="يناير">يناير</option>
+        <option value="فبراير">فبراير</option>
+        <option value="مارس">مارس</option>
+        <option value="ابريل">ابريل</option>
+        <option value="مايو">مايو</option>
+        <option value="يونيو">يونيو</option>
+        <option value="يوليو">يوليو</option>
+        <option value="أغسطس">أغسطس</option>
+        <option value="سبتمبر">سبتمبر</option>
+        <option value="اكتوبر">اكتوبر</option>
+        <option value="نوفمبر">نوفمبر</option>
+        <option value="ديسمبر">ديسمبر</option>
+      </select>
+
+      <button type="submit">عرض النتيجة</button>
+    </form>
+  </div>
 
   <script>
     document.getElementById("searchForm").addEventListener("submit", function(e) {
       e.preventDefault();
-      const name = document.getElementById("name").value.trim();
-      const studentClass = document.getElementById("class").value;
+      const name = document.getElementById("studentName").value;
+      const stage = document.getElementById("stage").value;
+      const className = document.getElementById("class").value;
       const month = document.getElementById("month").value;
 
-      // الانتقال للصفحة الثانية مع تمرير البيانات
-      window.location.href = `result.html?name=${encodeURIComponent(name)}&class=${encodeURIComponent(studentClass)}&month=${encodeURIComponent(month)}`;
+      window.location.href = `result.html?name=${encodeURIComponent(name)}&stage=${encodeURIComponent(stage)}&class=${encodeURIComponent(className)}&month=${encodeURIComponent(month)}`;
     });
   </script>
 </body>
